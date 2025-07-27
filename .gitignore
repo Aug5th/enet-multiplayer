@@ -1,0 +1,47 @@
+# Ignore Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore build outputs
+Debug/
+Release/
+x64/
+x86/
+*.obj
+*.pdb
+*.exe
+*.ilk
+*.log
+
+# Ignore CMake (if used)
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Ignore generated files
+*.vcxproj.*
+*.opensdf
+*.sdf
+*.tlog
+*.ipch
+*.idb
+*.aps
+*.ncb
+
+# Ignore temporary files
+*.tmp
+*.bak
+*.old
+*.~*
+
+# Ignore system files
+Thumbs.db
+.DS_Store
+
+# Ignore ENet build folders (if built manually)
+enet/Debug/
+enet/Release/
