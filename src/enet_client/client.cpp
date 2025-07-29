@@ -44,8 +44,10 @@ int main() {
         while (enet_host_service(client, &event, 100) > 0) {
             switch (event.type) {
             case ENET_EVENT_TYPE_CONNECT:
+            {
                 std::cout << "Connected to server.\n";
                 break;
+            }
 
             case ENET_EVENT_TYPE_RECEIVE: {
                 std::string msg(reinterpret_cast<char*>(event.packet->data));
@@ -66,10 +68,12 @@ int main() {
             }
 
             case ENET_EVENT_TYPE_DISCONNECT:
+            {
                 std::cout << "Disconnected from server.\n";
                 enet_host_destroy(client);
                 enet_deinitialize();
                 return 0;
+            }
 
             default:
                 break;

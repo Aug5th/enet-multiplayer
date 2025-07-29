@@ -28,9 +28,14 @@ int main() {
 
 	ENetAddress address;
 	address.host = ENET_HOST_ANY;
-	address.port = 1234; // 
+	address.port = 1234;
 
-	ENetHost* server = enet_host_create(&address, 2, 2, 0, 0);
+	ENetHost* server = enet_host_create(&address /* the address to bind the server host to */
+		, 2			/* allow up to 2 clients and/or outgoing connections */
+		, 2			/* allow up to 2 channels to be used, 0 and 1 */
+		, 0			/* assume any amount of incoming bandwidth */
+		, 0);			/* assume any amount of outgoing bandwidth */
+
 	if (!server) {
 		std::cerr << "Server create failed.\n";
 		return 1;
@@ -46,12 +51,14 @@ int main() {
 
 	while (true) {
 		ENetEvent event;
-		while (enet_host_service(server, &event, 1000) > 0) {
+		/* Wait up to 10000 milliseconds for an event. */
+		while (enet_host_service(server, &event, 10000) > 0) {
 			switch (event.type) {
 			case ENET_EVENT_TYPE_CONNECT:
+			{
 				if (connectedPlayers < 2) {
 					players[connectedPlayers++] = event.peer;
-					std::cout << "Player connected: " << connectedPlayers << "/2\n";
+					std::cout << "Player " << event.peer->address.port << " connected: " << connectedPlayers << " / 2\n";
 
 					std::string msg = "Player connected " + std::to_string(connectedPlayers) + "/2, please wait";
 					ENetPacket* packet = enet_packet_create(msg.c_str(), msg.size() + 1, ENET_PACKET_FLAG_RELIABLE);
@@ -66,10 +73,12 @@ int main() {
 					}
 				}
 				break;
+			}
 
-			case ENET_EVENT_TYPE_RECEIVE: {
+			case ENET_EVENT_TYPE_RECEIVE: 
+			{
 				std::string data(reinterpret_cast<char*>(event.packet->data));
-				std::cout << "Received from player: " << data << "\n";
+				std::cout << "Received from player " << event.peer->address.port <<": " << data << "\n";
 
 				if (data.rfind("CHOICE:", 0) == 0) {
 					int choiceNum = std::stoi(data.substr(7));
@@ -95,7 +104,8 @@ int main() {
 					enet_peer_send(players[0], 0, pkt1);
 					enet_peer_send(players[1], 0, pkt2);
 
-					std::cout << "Result sent. " << r1 << " / " << r2 << "\n";
+					std::cout << "Result sent. " << players[0]->address.port << "/" << players[1]->address.port 
+						<< ": " << r1 << " / " << r2 << "\n";
 
 					hasChosen[0] = hasChosen[1] = false;
 				}
@@ -105,6 +115,7 @@ int main() {
 			}
 
 			case ENET_EVENT_TYPE_DISCONNECT:
+			{
 				std::cout << "Player disconnected.\n";
 
 				for (int i = 0; i < 2; ++i) {
@@ -115,6 +126,7 @@ int main() {
 					}
 				}
 				break;
+			}
 
 			default:
 				break;
