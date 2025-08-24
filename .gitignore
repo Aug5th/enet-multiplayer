@@ -42,6 +42,5 @@ Makefile
 Thumbs.db
 .DS_Store
 
-# Ignore ENet build folders (if built manually)
-enet/Debug/
-enet/Release/
+# Ignore build folders
+prj/

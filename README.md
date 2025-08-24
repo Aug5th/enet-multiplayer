@@ -15,7 +15,8 @@
 ## 1) Base on this repo code, try to implement "Guess Number" game:
 ### Turn-Based:
 - Server picks a random number from 1 - 100.
-- Players take turns to guess.
+- Players take turns to guess.Simple flow example:
+Server: Random number is 52
 - After each guess, server announces the result of guess "PlayerX's guess is" + "Smaller" / "A Litter Small" / "Correct" / "A Litte Large" / "Larger". (Server say "A Litter Small" if guess's number smaller within 10. Similar to "A Litte Large")
 - Repeat until end game or quit.
 
