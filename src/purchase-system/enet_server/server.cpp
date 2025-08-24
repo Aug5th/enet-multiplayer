@@ -34,6 +34,9 @@ int main() {
         return EXIT_FAILURE;
     }
 
+    std::cout << "Server is running...";
+
+
     std::unordered_map<std::string, ClientState> clientsById;
     std::unordered_map<ENetPeer*, PeerData> peerMap;
 
@@ -100,11 +103,15 @@ int main() {
 
                 if (command == "WIN_MATCH") {
                     state.money += 500;
+                    std::cout << "Client " << clientId << " - win a match"
+                       << " (money=" << state.money << ")\n";
                     sendPacket(event.peer, "MONEY_UPDATE:" + std::to_string(state.money));
                 }
                 else if (command == "BUY_ITEM:Sword") {
                     if (state.money >= 300) {
                         state.money -= 300;
+                        std::cout << "Client " << clientId << " - purchase a Sword"
+                            << " (money=" << state.money << ")\n";
                         sendPacket(event.peer, "PURCHASE_OK:Sword");
                     }
                     else {
@@ -115,6 +122,8 @@ int main() {
                 else if (command == "BUY_ITEM:Shield") {
                     if (state.money >= 500) {
                         state.money -= 500;
+                        std::cout << "Client " << clientId << " - purchase a Shield"
+                            << " (money=" << state.money << ")\n";
                         sendPacket(event.peer, "PURCHASE_OK:Shield");
                     }
                     else {
