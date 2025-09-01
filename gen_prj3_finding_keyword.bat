@@ -13,7 +13,7 @@ cmake -S src/finding-keyword/enet_client -B prj/prj3_finding-keyword/enet_client
 
 REM Copy server from src to prj
 echo [INFO] Copying enet_server source files...
-xcopy /E /I src/finding-keyword/enet_server prj/prj3_finding-keyword/enet_server
+xcopy src\finding-keyword\enet_server prj\prj3_finding-keyword\enet_server /s /e /I
 
 echo Projects generated successfully.
 pause
